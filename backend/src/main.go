@@ -3,6 +3,7 @@ package main
 import (
 	"go-gin-project/controllers"
 	"go-gin-project/initializers"
+	"go-gin-project/middleware"
 	"go-gin-project/models"
 
 	"github.com/gin-gonic/gin"
@@ -10,6 +11,7 @@ import (
 
 func main() {
 	router := gin.Default()
+	router.Use(middleware.Cors())
 	initializers.ConnectToDB().AutoMigrate(&models.Todo{})
 
 	// 全件取得
