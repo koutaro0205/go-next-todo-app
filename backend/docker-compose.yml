@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  app:
+    build: . # Dockerfileがある場所を指定
+    container_name: go-next-todo-app
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./src:/app"
+    tty: true
+    depends_on:
+      - db # dbコンテナが起動してからappコンテナを起動させる
+  db:
+    image: mysql:8.3
+    platform: linux/amd64
+    container_name: go-next-todo-db
+    environment:
+      MYSQL_DATABASE: go_next_todo_app_db
+      MYSQL_ROOT_PASSWORD: password
+    # command: >
+    #   --character-set-server=utf8mb4
+    #   --collation-server=utf8mb4_general_ci
+    volumes:
+      - go-next-todo-db-volume:/var/lib/mysql
+    ports:
+      - 3306:3306
+
+volumes:
+  go-next-todo-db-volume:
